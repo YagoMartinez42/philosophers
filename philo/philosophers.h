@@ -6,7 +6,7 @@
 /*   By: samartin <samartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 12:30:28 by samartin          #+#    #+#             */
-/*   Updated: 2023/05/23 10:36:22 by samartin         ###   ########.fr       */
+/*   Updated: 2023/05/23 14:53:17 by samartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,11 @@ typedef struct s_philo
 
 typedef struct s_god
 {
-	size_t			n_philos;
-	size_t			time_2_die;
-	size_t			time_2_eat;
-	size_t			time_2_sleep;
-	size_t			eat_cycles;
+	int	n_philos;
+	int	time_2_die;
+	int	time_2_eat;
+	int	time_2_sleep;
+	int	eat_cycles;
 }	t_god;
 
 void	error_exit(int code);
