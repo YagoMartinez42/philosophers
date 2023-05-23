@@ -6,7 +6,7 @@
 /*   By: samartin <samartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 13:35:31 by samartin          #+#    #+#             */
-/*   Updated: 2023/05/19 13:47:34 by samartin         ###   ########.fr       */
+/*   Updated: 2023/05/22 13:44:56 by samartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,15 @@ int	ph_atoi(const char *str)
 		return ((int)nb);
 }
 
-t_god	*ph_parse(t_god *god, int argc, char **argv)
+t_god	*ph_parse(int argc, char **argv)
 {
+	t_god	*god;
+
 	if (argc < 5 || argc > 6)
 		error_exit(101);
 	god = malloc(sizeof(t_god));
 	if (!god)
-		return (NULL);
+		error_exit (103);
 	god->n_philos = ph_atoi(argv[1]);
 	if (!(god->n_philos))
 		error_exit(102);

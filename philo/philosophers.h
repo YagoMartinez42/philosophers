@@ -6,7 +6,7 @@
 /*   By: samartin <samartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 12:30:28 by samartin          #+#    #+#             */
-/*   Updated: 2023/05/19 13:00:55 by samartin         ###   ########.fr       */
+/*   Updated: 2023/05/23 10:36:22 by samartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,9 @@
 # include <stdlib.h>
 # include <stdio.h>
 # include <pthread.h>
+# define ARGS_ERROR "Error: Wrong arguments\nShould be: philo \
+number_of_philosophers time_to_die time_to_eat time_to_sleep \
+[number_of_times_each_philosopher_must_eat]\n"
 
 typedef struct s_fork
 {
@@ -44,5 +47,6 @@ typedef struct s_god
 }	t_god;
 
 void	error_exit(int code);
+t_god	*ph_parse(int argc, char **argv);
 
 #endif

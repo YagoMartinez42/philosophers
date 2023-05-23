@@ -6,7 +6,7 @@
 #    By: samartin <samartin@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/18 12:36:01 by samartin          #+#    #+#              #
-#    Updated: 2023/05/19 12:21:43 by samartin         ###   ########.fr        #
+#    Updated: 2023/05/22 14:28:50 by samartin         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,6 +15,7 @@ CC		:= gcc
 CFLAGS	:= -Wall -Wextra -Werror
 RM		:= rm -rf
 SRC		:=	philosophers.c \
+			philo_parse.c \
 			philo_exit.c
 OBJ		:= ${SRC:.c=.o}
 
