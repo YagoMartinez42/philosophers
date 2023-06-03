@@ -6,7 +6,7 @@
 #    By: samartin <samartin@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/18 12:36:01 by samartin          #+#    #+#              #
-#    Updated: 2023/06/01 11:08:23 by samartin         ###   ########.fr        #
+#    Updated: 2023/06/03 18:47:57 by samartin         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ OBJ		:= ${SRC:.c=.o}
 all: ${NAME}
 
 ${NAME}: ${OBJ}
-	${CC} -g3 -fsanitize="address" ${OBJ} -o ${NAME}
+	${CC} ${OBJ} -o ${NAME}
 
 clean:
 	${RM} ${OBJ}

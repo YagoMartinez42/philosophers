@@ -6,7 +6,7 @@
 /*   By: samartin <samartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 13:35:31 by samartin          #+#    #+#             */
-/*   Updated: 2023/05/31 12:13:16 by samartin         ###   ########.fr       */
+/*   Updated: 2023/06/01 14:47:41 by samartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,10 @@ t_philo	*ph_put_the_table(t_god *god)
 		i++;
 	}
 	if (i > 2)
+	{
 		last_fork->right_philo = first_philo_strt;
+		first_philo_strt->left_fork = last_fork;
+	}
 	return (first_philo_strt);
 }
 

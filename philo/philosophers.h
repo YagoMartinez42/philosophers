@@ -6,7 +6,7 @@
 /*   By: samartin <samartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 12:30:28 by samartin          #+#    #+#             */
-/*   Updated: 2023/05/31 13:02:11 by samartin         ###   ########.fr       */
+/*   Updated: 2023/06/03 19:10:44 by samartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,10 @@ typedef struct s_god
 }	t_god;
 
 void	error_exit(int code);
+void	ph_dinner_clean(t_god *god);
 t_god	*ph_parse(int argc, char **argv);
 t_fork	*philo_add(t_fork *left_fork, t_philo *philo);
 t_philo	*philo_new(size_t id);
+void	ph_born(t_philo	*philo);
 
 #endif
