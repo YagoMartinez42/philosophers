@@ -6,7 +6,7 @@
 /*   By: samartin <samartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 14:05:08 by samartin          #+#    #+#             */
-/*   Updated: 2023/05/31 13:16:52 by samartin         ###   ########.fr       */
+/*   Updated: 2023/06/13 10:36:03 by samartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ t_fork	*philo_add(t_fork *left_fork, t_philo *philo)
 	{
 		left_fork->right_philo = philo;
 		philo->left_fork = left_fork;
-		return(philo->own_fork);
+		return (philo->own_fork);
 	}
 	return (NULL);
 }

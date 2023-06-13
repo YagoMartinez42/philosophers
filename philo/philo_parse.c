@@ -6,7 +6,7 @@
 /*   By: samartin <samartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 13:35:31 by samartin          #+#    #+#             */
-/*   Updated: 2023/06/01 14:47:41 by samartin         ###   ########.fr       */
+/*   Updated: 2023/06/13 11:01:01 by samartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,14 +42,13 @@ int	ph_atoi(const char *str)
 t_philo	*ph_put_the_table(t_god *god)
 {
 	t_philo	*first_philo_strt;
-	t_philo *philo_strt;
+	t_philo	*philo_strt;
 	t_fork	*last_fork;
 	int		i;
 
 	first_philo_strt = philo_new(1);
 	if (!first_philo_strt)
 		return (NULL);
-	first_philo_strt->left_fork = NULL;
 	last_fork = first_philo_strt->own_fork;
 	i = 2;
 	while (i <= god->n_philos)
@@ -94,7 +93,7 @@ t_god	*ph_parse(int argc, char **argv)
 	god->eat_cycles = -1;
 	if (!god)
 		error_exit (103);
-	god->n_philos = ph_atoi(argv[1]);
+	god->n_philos = ph_atoi(argv[1]); //check for only 1?
 	god->time_2_die = ph_atoi(argv[2]);
 	god->time_2_eat = ph_atoi(argv[3]);
 	god->time_2_sleep = ph_atoi(argv[4]);

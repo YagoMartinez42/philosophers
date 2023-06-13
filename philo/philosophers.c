@@ -6,7 +6,7 @@
 /*   By: samartin <samartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 12:28:51 by samartin          #+#    #+#             */
-/*   Updated: 2023/06/03 18:47:15 by samartin         ###   ########.fr       */
+/*   Updated: 2023/06/13 10:32:50 by samartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,17 +21,15 @@ int	main(int argc, char **argv)
 {
 	t_god	*god;
 
-	atexit(check_leaks);
+	atexit(check_leaks); //Ding Ding!!
 	god = ph_parse(argc, argv);
-	int i = 0;
-	while (i < god->n_philos)
+	while (god->table->id != god->n_philos)
 	{
-		
-		printf("%lu ", god->table->id);
+		ph_born(god->table);
 		god->table = god->table->own_fork->right_philo;
-		i++;
 	}
-	printf("And %lu again\n", god->table->id);
+	ph_born(god->table);
+
 	ph_dinner_clean(god);
 	return (0);
 }

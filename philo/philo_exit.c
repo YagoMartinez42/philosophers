@@ -6,7 +6,7 @@
 /*   By: samartin <samartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 14:44:58 by samartin          #+#    #+#             */
-/*   Updated: 2023/06/03 18:48:55 by samartin         ###   ########.fr       */
+/*   Updated: 2023/06/13 10:14:21 by samartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	error_exit(int code)
 void	ph_dinner_clean(t_god *god)
 {
 	t_philo	*node;
-	
+
 	if (god->table)
 		god->table->left_fork->right_philo = NULL;
 	while (god->table)

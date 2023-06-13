@@ -6,7 +6,7 @@
 /*   By: samartin <samartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 12:30:28 by samartin          #+#    #+#             */
-/*   Updated: 2023/06/03 19:10:44 by samartin         ###   ########.fr       */
+/*   Updated: 2023/06/13 11:40:01 by samartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,33 +20,36 @@
 number_of_philosophers time_to_die time_to_eat time_to_sleep \
 [number_of_times_each_philosopher_must_eat]\n"
 
+typedef struct s_fork t_fork;
+typedef struct s_philo t_philo;
+
 typedef struct s_fork
 {
-	size_t			id;
+	int				id;
 	pthread_mutex_t	mute_me;
-	struct s_philo	*own_philo;
-	struct s_philo	*right_philo;
+	t_philo			*own_philo;
+	t_philo			*right_philo;
 }	t_fork;
 
 typedef struct s_philo
 {
-	size_t			id;
-	pthread_t		own_being;
-	size_t			status;
-	size_t			hunger;
-	size_t			rest;
-	struct s_fork	*own_fork;
-	struct s_fork	*left_fork;
+	int			id;
+	pthread_t	own_being;
+	size_t		status;
+	size_t		hunger;
+	size_t		rest;
+	t_fork		*own_fork;
+	t_fork		*left_fork;
 }	t_philo;
 
 typedef struct s_god
 {
-	int				n_philos;
-	int				time_2_die;
-	int				time_2_eat;
-	int				time_2_sleep;
-	int				eat_cycles;
-	struct s_philo	*table;
+	int		n_philos;
+	int		time_2_die;
+	int		time_2_eat;
+	int		time_2_sleep;
+	int		eat_cycles;
+	t_philo	*table;
 }	t_god;
 
 void	error_exit(int code);
