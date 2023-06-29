@@ -6,7 +6,7 @@
 /*   By: samartin <samartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 12:28:51 by samartin          #+#    #+#             */
-/*   Updated: 2023/06/13 10:32:50 by samartin         ###   ########.fr       */
+/*   Updated: 2023/06/29 16:16:27 by samartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ int	main(int argc, char **argv)
 		god->table = god->table->own_fork->right_philo;
 	}
 	ph_born(god->table);
-
+	gettimeofday(god->the_beginning, NULL);
+	
 	ph_dinner_clean(god);
 	return (0);
 }

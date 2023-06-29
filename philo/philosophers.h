@@ -6,7 +6,7 @@
 /*   By: samartin <samartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 12:30:28 by samartin          #+#    #+#             */
-/*   Updated: 2023/06/13 11:40:01 by samartin         ###   ########.fr       */
+/*   Updated: 2023/06/29 16:14:52 by samartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,16 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
+# include <sys/time.h>
 # define ARGS_ERROR "Error: Wrong arguments\nShould be: philo \
 number_of_philosophers time_to_die time_to_eat time_to_sleep \
 [number_of_times_each_philosopher_must_eat]\n"
 
-typedef struct s_fork t_fork;
-typedef struct s_philo t_philo;
+typedef struct s_fork	t_fork;
+typedef struct s_philo	t_philo;
+typedef struct timeval	t_timeval;
 
+/* hay que mirar si se puede usar un segundo typedef o sobra */
 typedef struct s_fork
 {
 	int				id;
@@ -44,12 +47,13 @@ typedef struct s_philo
 
 typedef struct s_god
 {
-	int		n_philos;
-	int		time_2_die;
-	int		time_2_eat;
-	int		time_2_sleep;
-	int		eat_cycles;
-	t_philo	*table;
+	int			n_philos;
+	int			time_2_die;
+	int			time_2_eat;
+	int			time_2_sleep;
+	int			eat_cycles;
+	t_timeval	*the_beginning;
+	t_philo		*table;
 }	t_god;
 
 void	error_exit(int code);
