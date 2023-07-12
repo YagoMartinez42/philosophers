@@ -6,7 +6,7 @@
 /*   By: samartin <samartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 14:44:58 by samartin          #+#    #+#             */
-/*   Updated: 2023/06/13 10:14:21 by samartin         ###   ########.fr       */
+/*   Updated: 2023/07/06 18:16:19 by samartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	error_exit(int code)
 	exit (code);
 }
 
-void	ph_dinner_clean(t_god *god)
+void	ph_dinner_clean(t_god *god, int n)
 {
 	t_philo	*node;
 

@@ -6,7 +6,7 @@
 /*   By: samartin <samartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 12:30:28 by samartin          #+#    #+#             */
-/*   Updated: 2023/06/29 16:14:52 by samartin         ###   ########.fr       */
+/*   Updated: 2023/07/06 18:16:37 by samartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,16 @@
 # include <stdlib.h>
 # include <string.h>
 # include <sys/time.h>
+# include <unistd.h>
 # define ARGS_ERROR "Error: Wrong arguments\nShould be: philo \
 number_of_philosophers time_to_die time_to_eat time_to_sleep \
 [number_of_times_each_philosopher_must_eat]\n"
 
 typedef struct s_fork	t_fork;
 typedef struct s_philo	t_philo;
+typedef struct s_god	t_god;
 typedef struct timeval	t_timeval;
 
-/* hay que mirar si se puede usar un segundo typedef o sobra */
 typedef struct s_fork
 {
 	int				id;
@@ -39,10 +40,11 @@ typedef struct s_philo
 	int			id;
 	pthread_t	own_being;
 	size_t		status;
-	size_t		hunger;
 	size_t		rest;
+	t_timeval	last_meal;
 	t_fork		*own_fork;
 	t_fork		*left_fork;
+	t_god		*god;
 }	t_philo;
 
 typedef struct s_god
@@ -52,15 +54,17 @@ typedef struct s_god
 	int			time_2_eat;
 	int			time_2_sleep;
 	int			eat_cycles;
-	t_timeval	*the_beginning;
+	t_timeval	the_beginning;
 	t_philo		*table;
 }	t_god;
 
 void	error_exit(int code);
-void	ph_dinner_clean(t_god *god);
+void	ph_dinner_clean(t_god *god, int n);
 t_god	*ph_parse(int argc, char **argv);
 t_fork	*philo_add(t_fork *left_fork, t_philo *philo);
 t_philo	*philo_new(size_t id);
 void	ph_born(t_philo	*philo);
+long	ph_elapsed_micro(t_timeval beggining);
+int		ph_are_you_ok(t_philo *philo);
 
 #endif
