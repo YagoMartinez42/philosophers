@@ -6,7 +6,7 @@
 /*   By: samartin <samartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 14:44:58 by samartin          #+#    #+#             */
-/*   Updated: 2023/07/06 18:16:19 by samartin         ###   ########.fr       */
+/*   Updated: 2023/07/13 18:55:46 by samartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	error_exit(int code)
 	exit (code);
 }
 
-void	ph_dinner_clean(t_god *god, int n)
+void	ph_dinner_clean(t_god *god)
 {
 	t_philo	*node;
 
@@ -34,8 +34,9 @@ void	ph_dinner_clean(t_god *god, int n)
 	while (god->table)
 	{
 		node = god->table->own_fork->right_philo;
-		free(god->table);
+		pthread_join(god->table->own_being, NULL);
 		free(god->table->own_fork);
+		free(god->table);
 		god->table = node;
 	}
 	free(god);

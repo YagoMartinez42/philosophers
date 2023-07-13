@@ -6,7 +6,7 @@
 /*   By: samartin <samartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 12:30:28 by samartin          #+#    #+#             */
-/*   Updated: 2023/07/06 18:16:37 by samartin         ###   ########.fr       */
+/*   Updated: 2023/07/13 18:56:02 by samartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,12 +54,13 @@ typedef struct s_god
 	int			time_2_eat;
 	int			time_2_sleep;
 	int			eat_cycles;
+	int			be;
 	t_timeval	the_beginning;
 	t_philo		*table;
 }	t_god;
 
 void	error_exit(int code);
-void	ph_dinner_clean(t_god *god, int n);
+void	ph_dinner_clean(t_god *god);
 t_god	*ph_parse(int argc, char **argv);
 t_fork	*philo_add(t_fork *left_fork, t_philo *philo);
 t_philo	*philo_new(size_t id);

@@ -6,7 +6,7 @@
 /*   By: samartin <samartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 15:49:02 by samartin          #+#    #+#             */
-/*   Updated: 2023/07/06 17:27:03 by samartin         ###   ########.fr       */
+/*   Updated: 2023/07/12 14:07:16 by samartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	ph_are_you_ok(t_philo *philo)
 {
 	if (ph_elapsed_micro(philo->last_meal) >= philo->god->time_2_die)
-		return(0);
+		return (0);
 	return (1);
 }
 
