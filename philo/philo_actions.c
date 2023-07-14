@@ -6,7 +6,7 @@
 /*   By: samartin <samartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 10:12:57 by samartin          #+#    #+#             */
-/*   Updated: 2023/07/13 18:50:06 by samartin         ###   ########.fr       */
+/*   Updated: 2023/07/14 15:20:33 by samartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,19 @@ static int	ph_eat(t_philo *philo)
 
 static int	ph_sleep(t_philo *philo)
 {
+	t_timeval	sleep_start;
+
+	gettimeofday(&sleep_start, NULL);
 	printf("%li: Philosopher %i is sleeping 😴", \
 		ph_elapsed_micro(philo->god->the_beginning), philo->id);
-
+	while (philo->god->be
+		&& ph_elapsed_micro(sleep_start) < philo->god->time_2_sleep)
+	{
+		if (!(ph_are_you_ok(philo)))
+			return (philo->id);
+		usleep (10);
+	}
+	return (0);
 }
 
 static void	*ph_live(void *philo_arg)
@@ -74,6 +84,10 @@ static void	*ph_live(void *philo_arg)
 
 void	ph_born(t_philo	*philo)
 {
-	philo->last_meal = philo->god->the_beginning;
+	printf ("existence is %i\n", philo->god->be);
+	printf ("birth of Philo %d in %li\n", philo->id, philo->god->the_beginning.tv_sec);
+	philo->last_meal.tv_sec = philo->god->the_beginning.tv_sec;
+	philo->last_meal.tv_usec = philo->god->the_beginning.tv_usec;
+	printf ("birth of Philo %d b \n", philo->id);
 	pthread_create(&(philo->own_being), NULL, ph_live, philo);
 }

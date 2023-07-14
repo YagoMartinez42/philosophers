@@ -6,27 +6,30 @@
 /*   By: samartin <samartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 12:28:51 by samartin          #+#    #+#             */
-/*   Updated: 2023/07/13 18:56:11 by samartin         ###   ########.fr       */
+/*   Updated: 2023/07/14 15:23:04 by samartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
-
+/*
 void	check_leaks()
 {
 	system("leaks -q philo");
-}
+}*/
 
 int	main(int argc, char **argv)
 {
 	t_god	*god;
 
-	atexit(check_leaks); //Ding Ding!!
+	//atexit(check_leaks); //Ding Ding!!
 	god = ph_parse(argc, argv);
 	gettimeofday(&(god->the_beginning), NULL);
 	god->be = 1;
+	printf ("existence is %i\n", god->be);
+	printf ("y se hizo la luz en %li\n", god->the_beginning.tv_sec);
 	while (god->table->id != god->n_philos)
 	{
+		printf ("philo %i\n", god->table->id);
 		ph_born(god->table);
 		god->table = god->table->own_fork->right_philo;
 	}
