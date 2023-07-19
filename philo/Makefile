@@ -6,7 +6,7 @@
 #    By: samartin <samartin@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/18 12:36:01 by samartin          #+#    #+#              #
-#    Updated: 2023/06/13 11:41:57 by samartin         ###   ########.fr        #
+#    Updated: 2023/07/14 14:26:44 by samartin         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,13 +18,14 @@ SRC		:=	philosophers.c \
 			philo_actions.c \
 			philo_exit.c \
 			philo_lists.c \
-			philo_parse.c
+			philo_parse.c \
+			philo_time.c
 OBJ		:= ${SRC:.c=.o}
 
 all: ${NAME}
 
 ${NAME}: ${OBJ}
-	${CC} ${OBJ} -o ${NAME}
+	${CC} ${OBJ} -fsanitize='address' -g3 -o ${NAME}
 
 clean:
 	${RM} ${OBJ}

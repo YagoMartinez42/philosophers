@@ -6,7 +6,7 @@
 /*   By: samartin <samartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 12:28:51 by samartin          #+#    #+#             */
-/*   Updated: 2023/07/14 15:23:04 by samartin         ###   ########.fr       */
+/*   Updated: 2023/07/19 16:58:45 by samartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,9 @@ int	main(int argc, char **argv)
 		god->table = god->table->own_fork->right_philo;
 	}
 	ph_born(god->table);
-	while (god->be)
+	while (god->be && god->eat_cycles)
 	{
-		if (god->table->status == 2)
+		if (god->table->status == 3)
 		{
 			god->table->status = 0;
 			god->table->own_fork->right_philo->status = 1;

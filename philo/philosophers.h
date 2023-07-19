@@ -6,7 +6,7 @@
 /*   By: samartin <samartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 12:30:28 by samartin          #+#    #+#             */
-/*   Updated: 2023/07/13 18:56:02 by samartin         ###   ########.fr       */
+/*   Updated: 2023/07/19 17:18:27 by samartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	error_exit(int code);
 void	ph_dinner_clean(t_god *god);
 t_god	*ph_parse(int argc, char **argv);
 t_fork	*philo_add(t_fork *left_fork, t_philo *philo);
-t_philo	*philo_new(size_t id);
+t_philo	*philo_new(size_t id, t_god *god);
 void	ph_born(t_philo	*philo);
 long	ph_elapsed_micro(t_timeval beggining);
 int		ph_are_you_ok(t_philo *philo);

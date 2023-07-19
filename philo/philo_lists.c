@@ -6,7 +6,7 @@
 /*   By: samartin <samartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 14:05:08 by samartin          #+#    #+#             */
-/*   Updated: 2023/06/13 10:36:03 by samartin         ###   ########.fr       */
+/*   Updated: 2023/07/18 13:24:37 by samartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ t_fork	*philo_add(t_fork *left_fork, t_philo *philo)
 	return (NULL);
 }
 
-t_philo	*philo_new(size_t id)
+t_philo	*philo_new(size_t id, t_god *god)
 {
 	t_philo	*philo_strt;
 	t_fork	*fork_strt;
@@ -35,6 +35,7 @@ t_philo	*philo_new(size_t id)
 	memset(philo_strt, 0, sizeof(t_philo));
 	memset(fork_strt, 0, sizeof(t_fork));
 	philo_strt->id = id;
+	philo_strt->god = god;
 	fork_strt->id = id;
 	philo_strt->own_fork = fork_strt;
 	fork_strt->right_philo = NULL;

@@ -6,7 +6,7 @@
 /*   By: samartin <samartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 13:35:31 by samartin          #+#    #+#             */
-/*   Updated: 2023/06/29 16:15:41 by samartin         ###   ########.fr       */
+/*   Updated: 2023/07/18 13:21:45 by samartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,14 +46,14 @@ t_philo	*ph_put_the_table(t_god *god)
 	t_fork	*last_fork;
 	int		i;
 
-	first_philo_strt = philo_new(1);
+	first_philo_strt = philo_new(1, god);
 	if (!first_philo_strt)
 		return (NULL);
 	last_fork = first_philo_strt->own_fork;
 	i = 2;
 	while (i <= god->n_philos)
 	{
-		philo_strt = philo_new(i);
+		philo_strt = philo_new(i, god);
 		if (!first_philo_strt)
 			return (NULL);
 		last_fork = philo_add(last_fork, philo_strt);
