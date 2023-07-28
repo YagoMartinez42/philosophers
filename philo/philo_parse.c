@@ -6,7 +6,7 @@
 /*   By: samartin <samartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 13:35:31 by samartin          #+#    #+#             */
-/*   Updated: 2023/07/18 13:21:45 by samartin         ###   ########.fr       */
+/*   Updated: 2023/07/26 13:47:14 by samartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,13 @@ int	ph_atoi(const char *str)
 		return ((int)nb);
 }
 
-t_philo	*ph_put_the_table(t_god *god)
+static void	ph_close_the_circle(t_fork *last_fork, t_philo *first_philo)
+{
+	last_fork->right_philo = first_philo;
+	first_philo->left_fork = last_fork;
+}
+
+static t_philo	*ph_put_the_table(t_god *god)
 {
 	t_philo	*first_philo_strt;
 	t_philo	*philo_strt;
@@ -62,10 +68,7 @@ t_philo	*ph_put_the_table(t_god *god)
 		i++;
 	}
 	if (i > 2)
-	{
-		last_fork->right_philo = first_philo_strt;
-		first_philo_strt->left_fork = last_fork;
-	}
+		ph_close_the_circle(last_fork, first_philo_strt);
 	return (first_philo_strt);
 }
 
@@ -93,7 +96,7 @@ t_god	*ph_parse(int argc, char **argv)
 	god->eat_cycles = -1;
 	if (!god)
 		error_exit (103);
-	god->n_philos = ph_atoi(argv[1]); //check for only 1?
+	god->n_philos = ph_atoi(argv[1]);
 	god->time_2_die = ph_atoi(argv[2]);
 	god->time_2_eat = ph_atoi(argv[3]);
 	god->time_2_sleep = ph_atoi(argv[4]);

@@ -6,7 +6,7 @@
 /*   By: samartin <samartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 15:49:02 by samartin          #+#    #+#             */
-/*   Updated: 2023/07/12 14:07:16 by samartin         ###   ########.fr       */
+/*   Updated: 2023/07/20 17:32:46 by samartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,11 @@
 int	ph_are_you_ok(t_philo *philo)
 {
 	if (ph_elapsed_micro(philo->last_meal) >= philo->god->time_2_die)
+	{
+		printf("%li: Philosopher %i DIED OF STARVATION 💀\n", \
+			ph_elapsed_micro(philo->god->the_beginning), philo->id);
 		return (0);
+	}
 	return (1);
 }
 
