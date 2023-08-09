@@ -6,7 +6,7 @@
 /*   By: samartin <samartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 14:44:58 by samartin          #+#    #+#             */
-/*   Updated: 2023/07/26 13:13:16 by samartin         ###   ########.fr       */
+/*   Updated: 2023/08/08 14:39:39 by samartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,5 +48,6 @@ void	ph_dinner_clean(t_god *god)
 		free(god->table);
 		god->table = node;
 	}
+	pthread_mutex_destroy(&(god->mute_msgs));
 	free(god);
 }

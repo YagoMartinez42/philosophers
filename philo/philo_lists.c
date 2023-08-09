@@ -6,7 +6,7 @@
 /*   By: samartin <samartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 14:05:08 by samartin          #+#    #+#             */
-/*   Updated: 2023/07/18 13:24:37 by samartin         ###   ########.fr       */
+/*   Updated: 2023/08/08 15:26:36 by samartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ t_philo	*philo_new(size_t id, t_god *god)
 	memset(philo_strt, 0, sizeof(t_philo));
 	memset(fork_strt, 0, sizeof(t_fork));
 	philo_strt->id = id;
+	philo_strt->cycle = god->eat_cycles;
 	philo_strt->god = god;
 	fork_strt->id = id;
 	philo_strt->own_fork = fork_strt;

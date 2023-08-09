@@ -6,7 +6,7 @@
 #    By: samartin <samartin@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/18 12:36:01 by samartin          #+#    #+#              #
-#    Updated: 2023/07/27 16:33:10 by samartin         ###   ########.fr        #
+#    Updated: 2023/08/03 15:22:43 by samartin         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,6 +18,7 @@ SRC		:=	philosophers.c \
 			philo_actions.c \
 			philo_exit.c \
 			philo_lists.c \
+			philo_msgs.c \
 			philo_parse.c \
 			philo_time.c \
 			philo_exception_case.c

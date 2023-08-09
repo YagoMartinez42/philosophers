@@ -1,37 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_exception_case.c                             :+:      :+:    :+:   */
+/*   philo_msgs.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: samartin <samartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/21 16:54:43 by samartin          #+#    #+#             */
-/*   Updated: 2023/08/03 15:21:08 by samartin         ###   ########.fr       */
+/*   Created: 2023/08/03 12:03:35 by samartin          #+#    #+#             */
+/*   Updated: 2023/08/08 15:12:09 by samartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-void	*ph_mock(void *philo_arg)
+void	ph_msg(t_philo *philo, char *msg)
 {
-	char	*msgs[5];
-	int		i;
-	t_philo	*philo;
-
-	philo = (t_philo *)philo_arg;
-	philo->own_fork->right_philo = philo;
-	msgs[0] = MOCK_MSG1;
-	msgs[1] = MOCK_MSG2;
-	msgs[2] = MOCK_MSG3;
-	msgs[3] = MOCK_MSG4;
-	msgs[4] = MOCK_MSG5;
-	i = 0;
-	while (i < 5)
-	{
-		ph_msg(philo, msgs[i]);
-		usleep(philo->god->time_2_die * 250);
-		i++;
-	}
-	philo->god->be = 0;
-	return (NULL);
+	pthread_mutex_lock(&(philo->god->mute_msgs));
+	if (philo->god->be)
+		printf("%li: Philosopher %i %s\n", \
+			ph_elapsed_micro(philo->god->the_beginning), philo->id, msg);
+	pthread_mutex_unlock(&(philo->god->mute_msgs));
 }

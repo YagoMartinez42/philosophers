@@ -6,7 +6,7 @@
 /*   By: samartin <samartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 13:35:31 by samartin          #+#    #+#             */
-/*   Updated: 2023/07/26 13:47:14 by samartin         ###   ########.fr       */
+/*   Updated: 2023/08/08 15:20:24 by samartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ t_god	*ph_parse(int argc, char **argv)
 	if (argc < 5 || argc > 6)
 		error_exit(101);
 	god = malloc(sizeof(t_god));
+	memset(god, 0, sizeof(t_god));
 	god->eat_cycles = -1;
 	if (!god)
 		error_exit (103);

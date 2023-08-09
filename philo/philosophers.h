@@ -6,7 +6,7 @@
 /*   By: samartin <samartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 12:30:28 by samartin          #+#    #+#             */
-/*   Updated: 2023/07/26 16:56:53 by samartin         ###   ########.fr       */
+/*   Updated: 2023/08/08 14:35:51 by samartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,10 @@ universe rules and eat these spaguetti with my bare hands!"
 I'm in front of a plate full of food. Even more! You can take this fork I came \
 with and stuck it in the place you like less!"
 # define MOCK_MSG5 "died by some mysterious event, but not from starvation."
+# define THINK_MSG "is thinking about life and the universe 🤔"
+# define FORK_MSG "has taken a fork 🍴"
+# define EAT_MSG "is eating 🍝"
+# define SLEEP_MSG "is sleeping 😴"
 
 typedef struct s_fork	t_fork;
 typedef struct s_philo	t_philo;
@@ -39,9 +43,9 @@ typedef struct timeval	t_timeval;
 /**
  * Forks and philosophers make the same circular list connecting each philo with
  * two forks and each fork with two philos. No list is formed if there is only 1
- * @var id: Each fork shares the same id as the philo "holding it with their
+ * @id: Each fork shares the same id as the philo "holding it with their
  *  right hand".
- * @var philo: The left fork and philo to the right of the right (own) fork both
+ * @philo: The left fork and philo to the right of the right (own) fork both
  *  start as NULL until set.
  */
 typedef struct s_fork
@@ -52,53 +56,57 @@ typedef struct s_fork
 	t_philo			*right_philo;
 }	t_fork;
 
-/**s
- * @var id Goes from 1 to the value of n_philos in the god.
- * @var own_being The thread that gives existence to the philo.
- * @var status: 0 = waiting for turn to eat; 1 = ready to eat; 2 = eating;
+/**
+ * @id: Goes from 1 to the value of n_philos in the god.
+ * @cycle: Count down from God's eat_cycle to zero.
+ * @own_being: The thread that gives existence to the philo.
+ * @status: 0 = waiting for turn to eat; 1 = ready to eat; 2 = eating;
  *  3 = finished eating, ready to pass the turn.
- * @var last_meal The time when last meal started. Set to the_beginning at first.
- * @var own_fork A pointer to the fork sharing their own id.
- * @var left_fork A pointer to the fork of the previous philo. First philo will
+ * @last_meal: The time when last meal started or the thread was launched.
+ * @own_fork: A pointer to the fork sharing their own id.
+ * @var: left_fork A pointer to the fork of the previous philo. First philo will
  *  connect with the last fork when closing the circle.
- * @var god: A pointer to God, the central controller of the dinner.
+ * @var: god A pointer to God, the central controller of the dinner.
  */
 typedef struct s_philo
 {
-	int			id;
-	pthread_t	own_being;
-	size_t		status;
-	size_t		rest;
-	t_timeval	last_meal;
-	t_fork		*own_fork;
-	t_fork		*left_fork;
-	t_god		*god;
+	int				id;
+	int				cycle;
+	pthread_t		own_being;
+	size_t			status;
+	t_timeval		last_meal;
+	t_fork			*own_fork;
+	t_fork			*left_fork;
+	t_god			*god;
 }	t_philo;
 
 /**
  * God is the main controller of the dining philosophers.
- * @var: n_philos Total amount of philos at the table. Set from param in main.
- * @var: time_2_die Time in ms. If more than this time passes from the start of
+ * @n_philos: Total amount of philos at the table. Set from param in main.
+ * @time_2_die: Time in ms. If more than this time passes from the start of
  *  two meals, the philosopher dies from starvation.
- * @var: time_2_sleep Time in ms that each philo passes sleeping after eating.
- * @var: eat_cycles How many cycles are to be executed in the simulation if no
+ * @time_2_sleep: Time in ms that each philo passes sleeping after eating.
+ * @eat_cycles: How many cycles are to be executed in the simulation if no
  *  philo dies before. If cycles param was not set, the flag is set to -1 and
  *  allows to run indefinitely.
- * @var: be Existence flag. Turns to 1 when the philo threads start launching,
+ * @be: Existence flag. Turns to 1 when the philo threads start launching,
  *  and returns to 0 if one philo dies or all completed the amount of cycles.
- * @var: the_beginning Timespamp to use as point zero reference.
- * @var: table A pointer to the first philo and, as such, to the whole table.
+ * @the_beginning: Timespamp to use as point zero reference.
+ * @mute_msgs: A mutex to reserve the message posting.
+ * @table: A pointer to the first philo and, as such, to the whole table.
  */
 typedef struct s_god
 {
-	int			n_philos;
-	int			time_2_die;
-	int			time_2_eat;
-	int			time_2_sleep;
-	int			eat_cycles;
-	int			be;
-	t_timeval	the_beginning;
-	t_philo		*table;
+	int				n_philos;
+	int				time_2_die;
+	int				time_2_eat;
+	int				time_2_sleep;
+	int				eat_cycles;
+	int				philos_done;
+	int				be;
+	t_timeval		the_beginning;
+	pthread_mutex_t	mute_msgs;
+	t_philo			*table;
 }	t_god;
 
 void	error_exit(int code);
@@ -107,6 +115,7 @@ t_god	*ph_parse(int argc, char **argv);
 t_fork	*philo_add(t_fork *left_fork, t_philo *philo);
 t_philo	*philo_new(size_t id, t_god *god);
 void	ph_born(t_philo	*philo);
+void	ph_msg(t_philo	*philo, char *msg);
 long	ph_elapsed_micro(t_timeval beggining);
 int		ph_are_you_ok(t_philo *philo);
 void	*ph_mock(void *philo_arg);
