@@ -6,7 +6,7 @@
 /*   By: samartin <samartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 12:30:28 by samartin          #+#    #+#             */
-/*   Updated: 2023/08/08 14:35:51 by samartin         ###   ########.fr       */
+/*   Updated: 2023/08/10 15:51:11 by samartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,11 @@
 # define ARGS_ERROR "Error: Wrong arguments\nShould be: philo \
 number_of_philosophers time_to_die time_to_eat time_to_sleep \
 [number_of_times_each_philosopher_must_eat]\n"
+# define THINK_MSG "is thinking about life and the universe 🤔"
+# define FORK_MSG "has taken a fork 🍴"
+# define EAT_MSG "is eating 🍝"
+# define SLEEP_MSG "is sleeping 😴"
+# define DEATH_MSG "DIED OF STARVATION 💀\n"
 # define MOCK_MSG1 "says: You despicable being, you lured me into this trap!"
 # define MOCK_MSG2 "says: Despite the rules from the gods above you tell that \
 I should avoid dying! Twice is written!"
@@ -30,10 +35,6 @@ universe rules and eat these spaguetti with my bare hands!"
 I'm in front of a plate full of food. Even more! You can take this fork I came \
 with and stuck it in the place you like less!"
 # define MOCK_MSG5 "died by some mysterious event, but not from starvation."
-# define THINK_MSG "is thinking about life and the universe 🤔"
-# define FORK_MSG "has taken a fork 🍴"
-# define EAT_MSG "is eating 🍝"
-# define SLEEP_MSG "is sleeping 😴"
 
 typedef struct s_fork	t_fork;
 typedef struct s_philo	t_philo;

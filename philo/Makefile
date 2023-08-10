@@ -6,7 +6,7 @@
 #    By: samartin <samartin@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/18 12:36:01 by samartin          #+#    #+#              #
-#    Updated: 2023/08/03 15:22:43 by samartin         ###   ########.fr        #
+#    Updated: 2023/08/10 15:32:26 by samartin         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,7 @@ OBJ		:= ${SRC:.c=.o}
 all: ${NAME}
 
 ${NAME}: ${OBJ}
-	${CC} ${OBJ} -fsanitize='thread' -pthread -g3 -o ${NAME}
+	${CC} ${OBJ} -o ${NAME}
 
 clean:
 	${RM} ${OBJ}

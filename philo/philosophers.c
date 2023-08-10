@@ -6,22 +6,16 @@
 /*   By: samartin <samartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 12:28:51 by samartin          #+#    #+#             */
-/*   Updated: 2023/08/08 15:44:16 by samartin         ###   ########.fr       */
+/*   Updated: 2023/08/10 16:00:26 by samartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
-/*
-void	check_leaks()
-{
-	system("leaks -q philo");
-}*/
 
 int	main(int argc, char **argv)
 {
 	t_god	*god;
 
-	//atexit(check_leaks); //Ding Ding!!
 	god = ph_parse(argc, argv);
 	gettimeofday(&(god->the_beginning), NULL);
 	god->be = 1;
