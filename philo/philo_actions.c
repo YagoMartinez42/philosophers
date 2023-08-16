@@ -6,12 +6,21 @@
 /*   By: samartin <samartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 10:12:57 by samartin          #+#    #+#             */
-/*   Updated: 2023/08/10 16:08:43 by samartin         ###   ########.fr       */
+/*   Updated: 2023/08/16 15:45:08 by samartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
+/**
+ * A philosopher goes thinking only if there is no option to eat after sleeping,
+ * thinking does not have a fixed duration, it goes until the philo's status
+ * changes.
+ * 
+ * @return If the thinking loop is broken by status change, it will return 0. If
+ * the function exit is due death (return of ph_are_you_ok is 0), it will return
+ * the id of the perished philo.
+ */
 static int	ph_think(t_philo *philo)
 {
 	ph_msg(philo, THINK_MSG);
@@ -24,6 +33,17 @@ static int	ph_think(t_philo *philo)
 	return (0);
 }
 
+/**
+ * Makes a philosopher pick up two forks by muting them, looping during the
+ * assigned eat time, then release the forks by unmuting and set their status
+ * to '3' (done eating). Still checks for dying time, because if the parameter
+ * 'time_to_eat' is greater than time_to_die, the specifications say they should
+ * die (time_to_die is to be counted since the beginning of the last meal).
+ * 
+ * @return If the function is successful, it will return 0. But if the
+ * 'ph_are_you ok' function returned 0 (they died), the return is the
+ * philosopher's ID.
+ */
 static int	ph_eat(t_philo *philo)
 {
 	pthread_mutex_lock(&(philo->own_fork->mute_me));
@@ -56,10 +76,8 @@ static int	ph_eat(t_philo *philo)
  * Go sleep after eating. It takes the time stated in the launch parameters.
  * Still goes checking if the starving time catches the philo.
  * 
- * @param philo A pointer to a struct representing a philosopher.
- * 
- * @return an integer value. If the function is successful, it will return 0.
- * But if the 'ph_are_you ok' function returned 0 (they died), the return is the
+ * @return If the function is successful, it will return 0. But if the
+ * 'ph_are_you ok' function returned 0 (they died), the return is the
  * philosopher's ID.
  */
 static int	ph_sleep(t_philo *philo)
@@ -123,8 +141,5 @@ void	ph_born(t_philo	*philo)
 	if (philo->god->n_philos > 1)
 		pthread_create(&(philo->own_being), NULL, ph_live, philo);
 	else
-	{
-		philo->god->philos_done = 1;
-		pthread_create (&(philo->own_being), NULL, ph_mock, philo);
-	}
+		pthread_create(&(philo->own_being), NULL, ph_mock, philo);
 }

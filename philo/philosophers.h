@@ -6,7 +6,7 @@
 /*   By: samartin <samartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 12:30:28 by samartin          #+#    #+#             */
-/*   Updated: 2023/08/10 15:51:11 by samartin         ###   ########.fr       */
+/*   Updated: 2023/08/16 15:43:45 by samartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,6 @@ void	ph_born(t_philo	*philo);
 void	ph_msg(t_philo	*philo, char *msg);
 long	ph_elapsed_micro(t_timeval beggining);
 int		ph_are_you_ok(t_philo *philo);
-void	*ph_mock(void *philo_arg);
+void	*ph_mock(void *philo);
 
 #endif
