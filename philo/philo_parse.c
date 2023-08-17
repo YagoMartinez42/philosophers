@@ -6,7 +6,7 @@
 /*   By: samartin <samartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 13:35:31 by samartin          #+#    #+#             */
-/*   Updated: 2023/08/08 15:20:24 by samartin         ###   ########.fr       */
+/*   Updated: 2023/08/17 16:06:15 by samartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,15 +53,11 @@ static t_philo	*ph_put_the_table(t_god *god)
 	int		i;
 
 	first_philo_strt = philo_new(1, god);
-	if (!first_philo_strt)
-		return (NULL);
 	last_fork = first_philo_strt->own_fork;
 	i = 2;
 	while (i <= god->n_philos)
 	{
 		philo_strt = philo_new(i, god);
-		if (!first_philo_strt)
-			return (NULL);
 		last_fork = philo_add(last_fork, philo_strt);
 		if (!(i & 1))
 			philo_strt->status = 1;
@@ -93,10 +89,10 @@ t_god	*ph_parse(int argc, char **argv)
 	if (argc < 5 || argc > 6)
 		error_exit(101);
 	god = malloc(sizeof(t_god));
+	if (!god)
+		error_exit(103);
 	memset(god, 0, sizeof(t_god));
 	god->eat_cycles = -1;
-	if (!god)
-		error_exit (103);
 	god->n_philos = ph_atoi(argv[1]);
 	god->time_2_die = ph_atoi(argv[2]);
 	god->time_2_eat = ph_atoi(argv[3]);
@@ -105,7 +101,5 @@ t_god	*ph_parse(int argc, char **argv)
 		god->eat_cycles = ph_atoi(argv[5]);
 	if (!(ph_omnipotency(god)))
 		error_exit (102);
-	if (!(god->table))
-		error_exit(103);
 	return (god);
 }

@@ -6,7 +6,7 @@
 /*   By: samartin <samartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 14:05:08 by samartin          #+#    #+#             */
-/*   Updated: 2023/08/08 15:26:36 by samartin         ###   ########.fr       */
+/*   Updated: 2023/08/17 16:07:30 by samartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ t_philo	*philo_new(size_t id, t_god *god)
 	philo_strt = (t_philo *)malloc(sizeof (t_philo));
 	fork_strt = (t_fork *)malloc(sizeof (t_fork));
 	if (!philo_strt || !fork_strt)
-		return (NULL);
+		error_exit(103);
 	memset(philo_strt, 0, sizeof(t_philo));
 	memset(fork_strt, 0, sizeof(t_fork));
 	philo_strt->id = id;
