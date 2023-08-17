@@ -6,7 +6,7 @@
 /*   By: samartin <samartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 12:30:28 by samartin          #+#    #+#             */
-/*   Updated: 2023/08/16 15:43:45 by samartin         ###   ########.fr       */
+/*   Updated: 2023/08/16 16:54:21 by samartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,9 @@ typedef struct s_fork
  *  3 = finished eating, ready to pass the turn.
  * @last_meal: The time when last meal started or the thread was launched.
  * @own_fork: A pointer to the fork sharing their own id.
- * @var: left_fork A pointer to the fork of the previous philo. First philo will
+ * @left_fork: A pointer to the fork of the previous philo. First philo will
  *  connect with the last fork when closing the circle.
- * @var: god A pointer to God, the central controller of the dinner.
+ * @god: A pointer to God, the central controller of the dinner.
  */
 typedef struct s_philo
 {

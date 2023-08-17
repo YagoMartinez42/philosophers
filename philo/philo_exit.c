@@ -6,7 +6,7 @@
 /*   By: samartin <samartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 14:44:58 by samartin          #+#    #+#             */
-/*   Updated: 2023/08/10 15:56:31 by samartin         ###   ########.fr       */
+/*   Updated: 2023/08/17 11:35:46 by samartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void	ph_dinner_clean(t_god *god)
 	if (god->table && god->n_philos > 1)
 		god->table->left_fork->right_philo = NULL;
 	pthread_mutex_unlock(&(god->mute_msgs));
+	pthread_mutex_destroy(&(god->mute_msgs));
 	while (god->table)
 	{
 		if (god->n_philos > 1)
@@ -49,6 +50,5 @@ void	ph_dinner_clean(t_god *god)
 		free(god->table);
 		god->table = node;
 	}
-	pthread_mutex_destroy(&(god->mute_msgs));
 	free(god);
 }
