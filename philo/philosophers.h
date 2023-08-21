@@ -6,7 +6,7 @@
 /*   By: samartin <samartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 12:30:28 by samartin          #+#    #+#             */
-/*   Updated: 2023/08/16 16:54:21 by samartin         ###   ########.fr       */
+/*   Updated: 2023/08/18 14:29:35 by samartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,13 @@ typedef struct timeval	t_timeval;
  * @philo: The left fork and philo to the right of the right (own) fork both
  *  start as NULL until set.
  */
-typedef struct s_fork
+struct s_fork
 {
 	int				id;
 	pthread_mutex_t	mute_me;
 	t_philo			*own_philo;
 	t_philo			*right_philo;
-}	t_fork;
+};
 
 /**
  * @id: Goes from 1 to the value of n_philos in the god.
@@ -69,7 +69,7 @@ typedef struct s_fork
  *  connect with the last fork when closing the circle.
  * @god: A pointer to God, the central controller of the dinner.
  */
-typedef struct s_philo
+struct s_philo
 {
 	int				id;
 	int				cycle;
@@ -79,7 +79,7 @@ typedef struct s_philo
 	t_fork			*own_fork;
 	t_fork			*left_fork;
 	t_god			*god;
-}	t_philo;
+};
 
 /**
  * God is the main controller of the dining philosophers.
@@ -96,7 +96,7 @@ typedef struct s_philo
  * @mute_msgs: A mutex to reserve the message posting.
  * @table: A pointer to the first philo and, as such, to the whole table.
  */
-typedef struct s_god
+struct s_god
 {
 	int				n_philos;
 	int				time_2_die;
@@ -108,7 +108,7 @@ typedef struct s_god
 	t_timeval		the_beginning;
 	pthread_mutex_t	mute_msgs;
 	t_philo			*table;
-}	t_god;
+};
 
 void	error_exit(int code);
 void	ph_dinner_clean(t_god *god);
