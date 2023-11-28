@@ -6,7 +6,7 @@
 /*   By: samartin <samartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 13:35:31 by samartin          #+#    #+#             */
-/*   Updated: 2023/08/17 16:56:57 by samartin         ###   ########.fr       */
+/*   Updated: 2023/10/13 12:39:51 by samartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,16 +70,14 @@ static t_philo	*ph_put_the_table(t_god *god)
 
 static int	ph_omnipotency(t_god *god)
 {
-	if (god->n_philos < 1)
-		return (0);
-	else if (god->time_2_die < 1)
-		return (0);
-	else if (god->time_2_eat < 1)
-		return (0);
-	else if (god->time_2_sleep < 1)
-		return (0);
+	if (god->n_philos < 1 || god->time_2_die < 1 || god->time_2_eat < 1
+		|| god->time_2_sleep < 1)
+	{
+		error_print (102);
+		return (102);
+	}
 	god->table = ph_put_the_table(god);
-	return (1);
+	return (0);
 }
 
 t_god	*ph_parse(int argc, char **argv)
@@ -87,10 +85,16 @@ t_god	*ph_parse(int argc, char **argv)
 	t_god	*god;
 
 	if (argc < 5 || argc > 6)
-		error_exit(101);
+	{
+		error_print(101);
+		return (NULL);
+	}
 	god = malloc(sizeof(t_god));
 	if (!god)
-		error_exit(103);
+	{
+		error_print(103);
+		return (NULL);
+	}
 	memset(god, 0, sizeof(t_god));
 	god->eat_cycles = -1;
 	god->n_philos = ph_atoi(argv[1]);
@@ -99,7 +103,7 @@ t_god	*ph_parse(int argc, char **argv)
 	god->time_2_sleep = ph_atoi(argv[4]);
 	if (argc == 6)
 		god->eat_cycles = ph_atoi(argv[5]);
-	if (!(ph_omnipotency(god)))
-		error_exit (102);
+	if (ph_omnipotency(god) > 0)
+		return (NULL);
 	return (god);
 }

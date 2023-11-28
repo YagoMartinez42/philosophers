@@ -6,7 +6,7 @@
 /*   By: samartin <samartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 16:54:43 by samartin          #+#    #+#             */
-/*   Updated: 2023/08/16 15:45:00 by samartin         ###   ########.fr       */
+/*   Updated: 2023/08/21 13:14:50 by samartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	*ph_mock(void *philo_arg)
 	while (i < 5)
 	{
 		ph_msg(philo, msgs[i]);
-		usleep(philo->god->time_2_die * 250);
+		usleep((philo->god->time_2_die * 250) - 1000);
 		i++;
 	}
 	philo->god->be = 0;

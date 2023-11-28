@@ -6,7 +6,7 @@
 /*   By: samartin <samartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 10:12:57 by samartin          #+#    #+#             */
-/*   Updated: 2023/08/16 15:45:08 by samartin         ###   ########.fr       */
+/*   Updated: 2023/11/28 16:44:24 by samartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,20 @@
  */
 static int	ph_think(t_philo *philo)
 {
+	int	be;
+
+	pthread_mutex_lock(&(philo->god->be_mute));
+	be = philo->god->be;
+	pthread_mutex_unlock(&(philo->god->be_mute));
 	ph_msg(philo, THINK_MSG);
-	while (philo->god->be && philo->status != 1)
+	while (be && philo->status != 1) //¡WORNIN! ¡¡¡WORNIN!!! (Race)
 	{
 		if (!(ph_are_you_ok(philo)))
 			return (philo->id);
 		usleep (200);
+		pthread_mutex_lock(&(philo->god->be_mute));
+		be = philo->god->be;
+		pthread_mutex_unlock(&(philo->god->be_mute));
 	}
 	return (0);
 }
@@ -46,28 +54,47 @@ static int	ph_think(t_philo *philo)
  */
 static int	ph_eat(t_philo *philo)
 {
+	int	be;
+
 	pthread_mutex_lock(&(philo->own_fork->mute_me));
+	philo->own_fork->fork_itself = 1;
 	ph_msg(philo, FORK_MSG);
 	pthread_mutex_lock(&(philo->left_fork->mute_me));
+	philo->left_fork->fork_itself = 1;
 	ph_msg(philo, FORK_MSG);
 	gettimeofday(&(philo->last_meal), NULL);
+	pthread_mutex_lock(&(philo->status_mute));
 	philo->status = 2;
+	pthread_mutex_unlock(&(philo->status_mute));
 	ph_msg(philo, EAT_MSG);
-	while (philo->god->be
-		&& ph_elapsed_micro(philo->last_meal) < philo->god->time_2_eat)
+	pthread_mutex_lock(&(philo->god->be_mute));
+	be = philo->god->be;
+	pthread_mutex_unlock(&(philo->god->be_mute));
+	while (be && ph_elapsed_micro(philo->last_meal) < philo->god->time_2_eat)
 	{
 		if (!(ph_are_you_ok(philo)))
 			return (philo->id);
 		usleep (200);
+		pthread_mutex_lock(&(philo->god->be_mute));
+		be = philo->god->be;
+		pthread_mutex_unlock(&(philo->god->be_mute));
 	}
+	philo->own_fork->fork_itself = 0;
 	pthread_mutex_unlock(&(philo->own_fork->mute_me));
+	philo->left_fork->fork_itself = 0;
 	pthread_mutex_unlock(&(philo->left_fork->mute_me));
+	pthread_mutex_lock(&(philo->status_mute));
 	philo->status = 3;
+	pthread_mutex_unlock(&(philo->status_mute));
 	if (philo->cycle > 0)
 	{
 		philo->cycle--;
 		if (!(philo->cycle))
+		{
+			pthread_mutex_lock(&(philo->god->pdone_mute));
 			philo->god->philos_done++;
+			pthread_mutex_unlock(&(philo->god->pdone_mute));
+		}
 	}
 	return (0);
 }
@@ -83,15 +110,21 @@ static int	ph_eat(t_philo *philo)
 static int	ph_sleep(t_philo *philo)
 {
 	t_timeval	sleep_start;
+	int			be;
 
 	gettimeofday(&sleep_start, NULL);
 	ph_msg(philo, SLEEP_MSG);
-	while (philo->god->be
-		&& ph_elapsed_micro(sleep_start) < philo->god->time_2_sleep)
+	pthread_mutex_lock(&(philo->god->be_mute));
+	be = philo->god->be;
+	pthread_mutex_unlock(&(philo->god->be_mute));
+	while (be && ph_elapsed_micro(sleep_start) < philo->god->time_2_sleep)
 	{
 		if (!(ph_are_you_ok(philo)))
 			return (philo->id);
 		usleep (200);
+		pthread_mutex_lock(&(philo->god->be_mute));
+		be = philo->god->be;
+		pthread_mutex_unlock(&(philo->god->be_mute));
 	}
 	return (0);
 }
@@ -110,19 +143,42 @@ static int	ph_sleep(t_philo *philo)
 static void	*ph_live(void *philo_arg)
 {
 	t_philo	*philo;
+	int		philo_status;
+	int		be;
 
 	philo = (t_philo *)philo_arg;
-	while (philo->god->be && philo->cycle)
+	pthread_mutex_lock(&(philo->god->be_mute));
+	be = philo->god->be;
+	pthread_mutex_unlock(&(philo->god->be_mute));
+	while (be && philo->cycle)
 	{
-		if (philo->status != 1)
+		pthread_mutex_lock(&(philo->status_mute));
+		philo_status = philo->status;
+		pthread_mutex_unlock(&(philo->status_mute));
+		if (philo_status != 1)
 		{
-			if (!(philo->god->be) || ph_think(philo))
+			if (ph_think(philo))
+			{
+				pthread_mutex_lock(&(philo->god->be_mute));
 				philo->god->be = 0;
+				pthread_mutex_unlock(&(philo->god->be_mute));
+			}
 		}
-		if (!(philo->god->be) || ph_eat(philo))
+		if (ph_eat(philo))
+		{
+			pthread_mutex_lock(&(philo->god->be_mute));
 			philo->god->be = 0;
+			pthread_mutex_unlock(&(philo->god->be_mute));
+		}
 		if (!(philo->god->be) || ph_sleep(philo))
+		{
+			pthread_mutex_lock(&(philo->god->be_mute));
 			philo->god->be = 0;
+			pthread_mutex_unlock(&(philo->god->be_mute));
+		}
+		pthread_mutex_lock(&(philo->god->be_mute));
+		be = philo->god->be;
+		pthread_mutex_unlock(&(philo->god->be_mute));
 	}
 	return (NULL);
 }
@@ -137,6 +193,7 @@ static void	*ph_live(void *philo_arg)
 void	ph_born(t_philo	*philo)
 {
 	pthread_mutex_init(&(philo->own_fork->mute_me), NULL);
+	pthread_mutex_init(&(philo->status_mute), NULL);
 	gettimeofday(&(philo->last_meal), NULL);
 	if (philo->god->n_philos > 1)
 		pthread_create(&(philo->own_being), NULL, ph_live, philo);

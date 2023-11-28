@@ -6,13 +6,13 @@
 #    By: samartin <samartin@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/18 12:36:01 by samartin          #+#    #+#              #
-#    Updated: 2023/08/17 11:42:29 by samartin         ###   ########.fr        #
+#    Updated: 2023/11/28 16:22:15 by samartin         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	:= philo
-CC		:= gcc
-CFLAGS	:= -Wall -Wextra -Werror
+CC		:= cc
+CFLAGS	:= -Wall -Wextra -Werror -g3 -fsanitize=thread
 RM		:= rm -rf
 SRC		:=	philosophers.c \
 			philo_actions.c \
@@ -27,7 +27,7 @@ OBJ		:= ${SRC:.c=.o}
 all: ${NAME}
 
 ${NAME}: ${OBJ}
-	${CC} ${OBJ} -o ${NAME}
+	${CC} ${OBJ} -g3 -fsanitize=thread -o ${NAME}
 
 clean:
 	${RM} ${OBJ}

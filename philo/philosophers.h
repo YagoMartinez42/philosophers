@@ -6,7 +6,7 @@
 /*   By: samartin <samartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 12:30:28 by samartin          #+#    #+#             */
-/*   Updated: 2023/08/18 14:29:35 by samartin         ###   ########.fr       */
+/*   Updated: 2023/10/11 15:03:49 by samartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ struct s_fork
 {
 	int				id;
 	pthread_mutex_t	mute_me;
+	int				fork_itself;
 	t_philo			*own_philo;
 	t_philo			*right_philo;
 };
@@ -74,6 +75,7 @@ struct s_philo
 	int				id;
 	int				cycle;
 	pthread_t		own_being;
+	pthread_mutex_t	status_mute;
 	size_t			status;
 	t_timeval		last_meal;
 	t_fork			*own_fork;
@@ -103,14 +105,16 @@ struct s_god
 	int				time_2_eat;
 	int				time_2_sleep;
 	int				eat_cycles;
+	pthread_mutex_t	pdone_mute;
 	int				philos_done;
+	pthread_mutex_t	be_mute;
 	int				be;
 	t_timeval		the_beginning;
 	pthread_mutex_t	mute_msgs;
 	t_philo			*table;
 };
 
-void	error_exit(int code);
+void	error_print(int code);
 void	ph_dinner_clean(t_god *god);
 t_god	*ph_parse(int argc, char **argv);
 t_fork	*philo_add(t_fork *left_fork, t_philo *philo);
