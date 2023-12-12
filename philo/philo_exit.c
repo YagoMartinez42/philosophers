@@ -6,53 +6,88 @@
 /*   By: samartin <samartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 14:44:58 by samartin          #+#    #+#             */
-/*   Updated: 2023/11/28 16:36:51 by samartin         ###   ########.fr       */
+/*   Updated: 2023/12/12 13:53:50 by samartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
+/**
+ * Joins all the threads of the philosophers in the linked list, which is no
+ * longer circular after setting to NULL the "next" value on one of the forks.
+ * 
+ * @param node A pointer to a struct representing a philosopher.
+ */
+static void	ph_join_all(t_philo *node)
+{
+	while (node)
+	{
+		pthread_join(node->own_being, NULL);
+		node = node->own_fork->right_philo;
+	}
+}
+
+/**
+ * Clears all the resources used by the linked list of philosophers and forks.
+ * 
+ * @param node A pointer to the first philosopher in a linked list of
+ * philosophers.
+ */
+static void	ph_clear_all(t_philo *node)
+{
+	t_philo	*aux;
+
+	while (node)
+	{
+		aux = node->own_fork->right_philo;
+		pthread_mutex_destroy(&(node->own_fork->fk_mtx));
+		pthread_mutex_destroy(&(node->sts_mtx));
+		free(node->own_fork);
+		free(node);
+		node = aux;
+	}
+}
+
+/**
+ * Preventively sets the 'be' flag to zero (under usual conditions should
+ * already be zero) and cleans up the resources used during the dinner
+ * simulation.
+ * 
+ * @param god A pointer to the controller struct that contained variables
+ * and mutexes related to the general aspects of the simulation.
+ */
+void	ph_dinner_clean(t_god *god)
+{
+	pthread_mutex_lock(&(god->be_mtx));
+	god->be = 0;
+	pthread_mutex_unlock(&(god->be_mtx));
+	pthread_mutex_unlock(&(god->msg_mtx));
+	if (god->table && god->n_philos > 1)
+		god->table->left_fork->right_philo = NULL;
+	else
+		god->table->own_fork->right_philo = NULL;
+	ph_join_all(god->table);
+	ph_clear_all(god->table);
+	pthread_mutex_destroy(&(god->be_mtx));
+	pthread_mutex_destroy(&(god->msg_mtx));
+	pthread_mutex_destroy(&(god->pdone_mtx));
+	free(god);
+}
+
+/**
+ * Prints an error message on the stderror output based on the given error
+ * code.
+ * 
+ * @param code An integer that represents the error code.
+ */
 void	error_print(int code)
 {
 	if (code == 101)
 		write(2, ARGS_ERROR, 146);
 	else if (code == 102)
-		write(2, "Error\nArgument not valid.\n", 27);
+		write(2, "Error: Argument not valid.\n", 28);
 	else if (code == 103)
-		write(2, "Error\nUnable to allocate memory\n", 33);
+		write(2, "Error: Unable to allocate memory\n", 34);
 	else
-		write(2, "Error\n(Untracked error)\n", 33);
-}
-
-void	ph_dinner_clean(t_god *god)
-{
-	t_philo	*node;
-
-	pthread_mutex_lock(&(god->be_mute));
-	god->be = 0;
-	pthread_mutex_unlock(&(god->be_mute));
-	node = NULL;
-	if (god->table && god->n_philos > 1)
-		god->table->left_fork->right_philo = NULL;
-	while (god->table)
-	{
-		if (god->n_philos > 1)
-			node = god->table->own_fork->right_philo;
-		if (god->table->status == 2)
-		{
-			pthread_mutex_unlock(&(god->table->own_fork->mute_me));
-			pthread_mutex_unlock(&(god->table->left_fork->mute_me));
-		}
-		pthread_mutex_destroy(&(god->table->own_fork->mute_me));
-		pthread_mutex_destroy(&(god->table->status_mute));
-		pthread_detach(god->table->own_being);
-		free(god->table->own_fork);
-		free(god->table);
-		god->table = node;
-	}
-	pthread_mutex_unlock(&(god->mute_msgs));
-	pthread_mutex_destroy(&(god->be_mute));
-	pthread_mutex_destroy(&(god->mute_msgs));
-	pthread_mutex_destroy(&(god->pdone_mute));
-	free(god);
+		write(2, "Error: (Untracked error)\n", 26);
 }

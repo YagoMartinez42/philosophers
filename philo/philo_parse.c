@@ -6,7 +6,7 @@
 /*   By: samartin <samartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 13:35:31 by samartin          #+#    #+#             */
-/*   Updated: 2023/10/13 12:39:51 by samartin         ###   ########.fr       */
+/*   Updated: 2023/12/04 15:49:19 by samartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static t_philo	*ph_put_the_table(t_god *god)
 		philo_strt = philo_new(i, god);
 		last_fork = philo_add(last_fork, philo_strt);
 		if (!(i & 1))
-			philo_strt->status = 1;
+			philo_strt->status = READY;
 		i++;
 	}
 	if (i > 2)
