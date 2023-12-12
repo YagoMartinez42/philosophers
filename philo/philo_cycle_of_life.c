@@ -6,7 +6,7 @@
 /*   By: samartin <samartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/11 15:40:30 by samartin          #+#    #+#             */
-/*   Updated: 2023/12/12 12:38:24 by samartin         ###   ########.fr       */
+/*   Updated: 2023/12/12 14:58:47 by samartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,7 @@ static void	*ph_live(void *philo_arg)
 	int			be;
 
 	philo = (t_philo *)philo_arg;
-	pthread_mutex_lock(&(philo->god->be_mtx));
-	be = philo->god->be;
-	pthread_mutex_unlock(&(philo->god->be_mtx));
+	be = ph_get_sim_flag(philo->god);
 	while (be && philo->cycle)
 	{
 		pthread_mutex_lock(&(philo->sts_mtx));
@@ -41,29 +39,15 @@ static void	*ph_live(void *philo_arg)
 		if (philo_status != READY)
 		{
 			if (ph_think(philo))
-			{
-				pthread_mutex_lock(&(philo->god->be_mtx));
-				philo->god->be = 0;
-				pthread_mutex_unlock(&(philo->god->be_mtx));
-			}
+				ph_stop_sim(philo->god);
 		}
 		if (ph_eat(philo))
-		{
-			pthread_mutex_lock(&(philo->god->be_mtx));
-			philo->god->be = 0;
-			pthread_mutex_unlock(&(philo->god->be_mtx));
-		}
+			ph_stop_sim(philo->god);
 		if (!(philo->cycle))
 			break ;
 		if (ph_sleep(philo))
-		{
-			pthread_mutex_lock(&(philo->god->be_mtx));
-			philo->god->be = 0;
-			pthread_mutex_unlock(&(philo->god->be_mtx));
-		}
-		pthread_mutex_lock(&(philo->god->be_mtx));
-		be = philo->god->be;
-		pthread_mutex_unlock(&(philo->god->be_mtx));
+			ph_stop_sim(philo->god);
+		be = ph_get_sim_flag(philo->god);
 	}
 	return (NULL);
 }
@@ -101,9 +85,7 @@ static void	*ph_mock(void *philo_arg)
 		usleep((philo->god->time_2_die * 250) - 800);
 		i++;
 	}
-	pthread_mutex_lock(&(philo->god->be_mtx));
-	philo->god->be = 0;
-	pthread_mutex_unlock(&(philo->god->be_mtx));
+	ph_stop_sim(philo->god);
 	return (NULL);
 }
 

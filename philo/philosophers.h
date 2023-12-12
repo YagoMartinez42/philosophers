@@ -6,7 +6,7 @@
 /*   By: samartin <samartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 12:30:28 by samartin          #+#    #+#             */
-/*   Updated: 2023/12/12 13:53:32 by samartin         ###   ########.fr       */
+/*   Updated: 2023/12/12 14:57:17 by samartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,6 +142,8 @@ int		ph_think(t_philo *philo);
 int		ph_eat(t_philo *philo);
 int		ph_sleep(t_philo *philo);
 void	ph_msg(t_philo	*philo, char *msg);
+int		ph_get_sim_flag(t_god *god);
+void	ph_stop_sim(t_god *god);
 long	ph_elapsed_micro(t_timeval beggining);
 int		ph_are_you_ok(t_philo *philo);
 

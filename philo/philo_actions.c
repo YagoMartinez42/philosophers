@@ -6,11 +6,36 @@
 /*   By: samartin <samartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 10:12:57 by samartin          #+#    #+#             */
-/*   Updated: 2023/12/12 12:38:24 by samartin         ###   ########.fr       */
+/*   Updated: 2023/12/12 14:56:49 by samartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
+
+static void	ph_pickup_forks(t_philo *philo)
+{
+	pthread_mutex_lock(&(philo->own_fork->fk_mtx));
+	philo->own_fork->fork_itself = 1;
+	ph_msg(philo, FORK_MSG);
+	pthread_mutex_lock(&(philo->left_fork->fk_mtx));
+	philo->left_fork->fork_itself = 1;
+	ph_msg(philo, FORK_MSG);
+	gettimeofday(&(philo->last_meal), NULL);
+	pthread_mutex_lock(&(philo->sts_mtx));
+	philo->status = FEEDING;
+	pthread_mutex_unlock(&(philo->sts_mtx));
+}
+
+static void	ph_drop_forks(t_philo *philo)
+{
+	philo->own_fork->fork_itself = 0;
+	pthread_mutex_unlock(&(philo->own_fork->fk_mtx));
+	philo->left_fork->fork_itself = 0;
+	pthread_mutex_unlock(&(philo->left_fork->fk_mtx));
+	pthread_mutex_lock(&(philo->sts_mtx));
+	philo->status = FED;
+	pthread_mutex_unlock(&(philo->sts_mtx));
+}
 
 /**
  * A philosopher goes thinking only if there is no option to eat after sleeping,
@@ -26,18 +51,14 @@ int	ph_think(t_philo *philo)
 	int			be;
 	t_status	status;
 
-	pthread_mutex_lock(&(philo->god->be_mtx));
-	be = philo->god->be;
-	pthread_mutex_unlock(&(philo->god->be_mtx));
+	be = ph_get_sim_flag(philo->god);
 	ph_msg(philo, THINK_MSG);
 	while (be && status != READY)
 	{
 		if (!(ph_are_you_ok(philo)))
 			return (philo->id);
 		usleep (200);
-		pthread_mutex_lock(&(philo->god->be_mtx));
-		be = philo->god->be;
-		pthread_mutex_unlock(&(philo->god->be_mtx));
+		be = ph_get_sim_flag(philo->god);
 		pthread_mutex_lock(&(philo->sts_mtx));
 		status = philo->status;
 		pthread_mutex_unlock(&(philo->sts_mtx));
@@ -60,36 +81,17 @@ int	ph_eat(t_philo *philo)
 {
 	int	be;
 
-	pthread_mutex_lock(&(philo->own_fork->fk_mtx));
-	philo->own_fork->fork_itself = 1;
-	ph_msg(philo, FORK_MSG);
-	pthread_mutex_lock(&(philo->left_fork->fk_mtx));
-	philo->left_fork->fork_itself = 1;
-	ph_msg(philo, FORK_MSG);
-	gettimeofday(&(philo->last_meal), NULL);
-	pthread_mutex_lock(&(philo->sts_mtx));
-	philo->status = FEEDING;
-	pthread_mutex_unlock(&(philo->sts_mtx));
+	ph_pickup_forks(philo);
 	ph_msg(philo, EAT_MSG);
-	pthread_mutex_lock(&(philo->god->be_mtx));
-	be = philo->god->be;
-	pthread_mutex_unlock(&(philo->god->be_mtx));
+	be = ph_get_sim_flag(philo->god);
 	while (be && ph_elapsed_micro(philo->last_meal) < philo->god->time_2_eat)
 	{
 		if (!(ph_are_you_ok(philo)))
 			return (philo->id);
 		usleep (200);
-		pthread_mutex_lock(&(philo->god->be_mtx));
-		be = philo->god->be;
-		pthread_mutex_unlock(&(philo->god->be_mtx));
+		be = ph_get_sim_flag(philo->god);
 	}
-	philo->own_fork->fork_itself = 0;
-	pthread_mutex_unlock(&(philo->own_fork->fk_mtx));
-	philo->left_fork->fork_itself = 0;
-	pthread_mutex_unlock(&(philo->left_fork->fk_mtx));
-	pthread_mutex_lock(&(philo->sts_mtx));
-	philo->status = FED;
-	pthread_mutex_unlock(&(philo->sts_mtx));
+	ph_drop_forks(philo);
 	if (philo->cycle > 0)
 	{
 		philo->cycle--;
@@ -118,17 +120,13 @@ int	ph_sleep(t_philo *philo)
 
 	gettimeofday(&sleep_start, NULL);
 	ph_msg(philo, SLEEP_MSG);
-	pthread_mutex_lock(&(philo->god->be_mtx));
-	be = philo->god->be;
-	pthread_mutex_unlock(&(philo->god->be_mtx));
+	be = ph_get_sim_flag(philo->god);
 	while (be && ph_elapsed_micro(sleep_start) < philo->god->time_2_sleep)
 	{
 		if (!(ph_are_you_ok(philo)))
 			return (philo->id);
 		usleep (200);
-		pthread_mutex_lock(&(philo->god->be_mtx));
-		be = philo->god->be;
-		pthread_mutex_unlock(&(philo->god->be_mtx));
+		be = ph_get_sim_flag(philo->god);
 	}
 	return (0);
 }
